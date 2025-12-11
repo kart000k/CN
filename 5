@@ -1,0 +1,44 @@
+Server
+package exp5;
+import java.net.*;
+public class udpserver {
+public static void main(String[] args) throws Exception { 
+String[] hosts =
+{"yahoo.com","gmail.com","cricinfo.com","facebook.com"};
+String[] ips =
+{"68.180.206.184","209.85.148.19","80.168.92.140","69.63.189.16"};
+DatagramSocket ds = new DatagramSocket(1363);
+byte[] recv = new byte[1024]; 
+while (true) {
+DatagramPacket p = new DatagramPacket(recv, recv.length); 
+ds.receive(p);
+String host = new String(p.getData()).trim(); 
+String reply = "Host Not Found";
+for (int i = 0; i < hosts.length; i++)
+if (hosts[i].equals(host)) reply = ips[i];
+byte[] send = reply.getBytes();
+ds.send(new DatagramPacket(send,send.length, p.getAddress(), 
+p.getPort()));
+}
+}
+}
+Client:
+package exp5;
+importjava.net.*; 
+import java.io.*;
+public class udpclient {
+public static void main(String[] args) throws Exception { 
+DatagramSocket ds = new DatagramSocket();
+InetAddress ip = InetAddress.getLocalHost();
+BufferedReader br = new
+BufferedReader(newInputStreamReader(System.in)); 
+System.out.print("Enter hostname: ");
+byte[] send = br.readLine().getBytes();
+ds.send(new DatagramPacket(send,send.length, ip, 1365)); 
+byte[] recv = new byte[1024];
+DatagramPacket p = new DatagramPacket(recv, recv.length); 
+ds.receive(p);
+System.out.println("IP: " + new String(p.getData()).trim()); 
+ds.close();
+}
+}
