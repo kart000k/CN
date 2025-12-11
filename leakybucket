@@ -1,0 +1,41 @@
+package exp7;
+import java.util.*;
+public classleaky_bucket {
+public static void main(String[] args) { 
+Scannersc = new Scanner(System.in);
+int buck_cap = 4, rate = 3, buck_rem = 0;
+System.out.print("Enter number of packets: ");
+int n = sc.nextInt();
+int a[] = new int[n];
+System.out.println("Enter the packets:");
+for (int i = 0; i < n; i++) 
+a[i] = sc.nextInt();
+System.out.println("Clock \t PacketSize \t Accept\t Sent\t 
+Remaining");
+for (int i = 0; i < n; i++) {
+int recv = 0, sent = 0;
+// Check accept / drop
+if (a[i] != 0) {
+if (buck_rem + a[i] > buck_cap) 
+recv = -1; // dropped
+else {
+recv = a[i]; 
+buck_rem += a[i];
+}
+}
+if (buck_rem > 0) {
+sent = Math.min(buck_rem,rate); 
+buck_rem -= sent;
+}
+if (recv == -1)
+System.out.println((i+1) + "\t" + a[i] + "\t\tdropped\t" + sent + 
+"\t" + buck_rem);
+else
+System.out.println((i+1) + "\t" + a[i] + "\t\t" + recv + "\t" + sent
++ "\t" + buck_rem);
+}
+}
+}
+o/p
+packets 6
+123456
