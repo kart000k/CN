@@ -1,0 +1,53 @@
+Server:
+package exp6a; 
+importjava.io.*;
+import java.net.*; 
+public classserver {
+public static void main(String[] args) { 
+try {
+ServerSocketss = new ServerSocket(5604); 
+System.out.println("Server running..."); 
+Socket s = ss.accept();
+DataInputStream din = new DataInputStream(s.getInputStream());
+DataOutputStream dout = new 
+DataOutputStream(s.getOutputStream());
+String[] ip = {"165.165.80.80", "165.165.79.1"};
+String[] mac = {"6A:08:AA:C2", "8A:BC:E3:FA"};
+while (true) {
+String request = din.readLine();
+if (request == null) break; // client disconnected, so stop server 
+String response = "Not Found";
+for (int i = 0; i < ip.length; i++) {
+if (request.equals(ip[i])) response = mac[i];
+}
+dout.writeBytes(response + "\n");
+}
+} catch (Exception e) { 
+System.out.println(e);
+}
+}
+}
+Client:
+package exp6a; 
+importjava.io.*;
+import java.net.*; 
+public class client {
+public static void main(String[] args) { 
+try {
+BufferedReader br = new BufferedReader(new 
+InputStreamReader(System.in));
+Sockets = new Socket("127.0.0.1", 5604);
+DataInputStream din = new DataInputStream(s.getInputStream()); 
+DataOutputStream dout = new
+DataOutputStream(s.getOutputStream());
+System.out.print("Enter the Logical Address(IP): "); 
+String ip = br.readLine();
+dout.writeBytes(ip + "\n"); 
+String mac = din.readLine();
+System.out.println("The Physical Addressis: " + mac); 
+s.close();
+} catch (Exception e) { 
+System.out.println(e);
+}
+}
+}
